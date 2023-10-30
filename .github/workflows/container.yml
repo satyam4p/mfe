@@ -1,0 +1,31 @@
+name: deploy-container
+
+on: 
+  push:
+    branches:
+      - main
+      - master 
+    paths: # provide the packges for which this flow needs to run when changed
+     - 'packages/container/**'
+
+defaults:
+ run:
+  working-directory: packages/container #sets current working directory
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest #specify os for vm
+
+    steps:
+      - uses: actions/checkout@v2 #specify lib to checkout the code
+      - run: npm install
+      - run: npm run build
+
+      #now comes the content which will take care of sending build files to aws service, for this we would need access to aws CLI so use the library which will help us use cli
+
+      - uses: shinyinc/action-aws-cli@v1.2
+      - run: aws s3 sync dist s#://${{secrets.AWS_S3_BUCKET_NAME}}/container/latest #this command provides the service to be used in this case its S3 and sync or add the dist folder which we will have in our current working directory after build command
+      - env: 
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
