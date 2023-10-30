@@ -6,7 +6,7 @@ on:
       - main
       - master 
     paths: # provide the packges for which this flow needs to run when changed
-     - 'packages/container/**'
+      - 'packages/container/**'
 
 defaults:
  run:
