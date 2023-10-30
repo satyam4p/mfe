@@ -6,11 +6,11 @@ on:
       - main
       - master 
     paths: # provide the packges for which this flow needs to run when changed
-      - 'container/**'
+      - './container/**'
 
 defaults:
  run:
-  working-directory: container #sets current working directory
+  working-directory: ./container #sets current working directory
 
 
 jobs:
